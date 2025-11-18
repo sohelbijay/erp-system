@@ -25,7 +25,7 @@
         <div class="container mx-auto flex justify-between items-center py-4 px-6">
             <!-- Logo -->
             <a href="/" class="text-2xl font-bold tracking-wide hover:opacity-90 transition">
-                <span class="text-white">ERP</span><span class="text-yellow-300">System</span>
+                <span class="text-white">MICRO SERVICE </span><span class="text-yellow-300">System</span>
             </a>
 
             <!-- Navigation -->
@@ -64,7 +64,7 @@
     <!-- 🧭 Hero Section -->
     <section class="bg-gradient-to-r from-blue-600 to-blue-500 text-white py-20 shadow-inner">
         <div class="container mx-auto text-center px-6">
-            <h2 class="text-4xl md:text-5xl font-extrabold mb-4 drop-shadow-lg">Welcome to ERP System</h2>
+            <h2 class="text-4xl md:text-5xl font-extrabold mb-4 drop-shadow-lg">Welcome to MICRO SERVICE System</h2>
             <p class="text-lg md:text-xl mb-8 text-blue-100 max-w-2xl mx-auto">
                 Manage your business efficiently — HR, Inventory, Accounts, and more — in one powerful platform.
             </p>

@@ -5,6 +5,7 @@ namespace App\Livewire\Auth;
 use Livewire\Component;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
+use App\Helpers\LoggerHelper;
 
 class Login extends Component
 {
@@ -13,47 +14,64 @@ class Login extends Component
     public $errorMessage = '';
     public $loggedIn = false;
 
-    public function login(Request $request)
+    public function login()
     {
         $this->errorMessage = null;
 
         try {
+            // Call Gateway Login API
             $response = Http::post(env('GATEWAY_URL') . '/api/login', [
                 'email' => $this->email,
                 'password' => $this->password,
             ]);
 
-            if ($response->failed()) {
+            if (!$response->successful()) {
                 $this->errorMessage = $response->json()['message'] ?? 'Invalid credentials';
                 return;
             }
 
             $data = $response->json();
 
-            // Save session
-            $request->session()->put('user', $data['user']);
-            $request->session()->put('token', $data['token']);
+            // Save session WITHOUT $request
+            session()->put('user', $data['user']);
+            session()->put('token', $data['token']);
 
+            // Log login info
+            LoggerHelper::write('LOGIN_SUCCESS', [
+                'email'   => $this->email,
+                'user_id' => $data['user']['id'] ?? null,
+                'user_name' => $data['user']['name'] ?? null,
+            ]);
+
+            // Mark logged-in state
             $this->loggedIn = true;
 
             return redirect()->to('/dashboard');
 
         } catch (\Exception $e) {
+
+            LoggerHelper::write('LOGIN_ERROR', [
+                'email' => $this->email,
+                'error' => $e->getMessage(),
+            ]);
+
             $this->errorMessage = "Something went wrong: " . $e->getMessage();
         }
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
+        $user = session('user', ['id' => null, 'email' => null]);
 
-        // Clear everything
-        $request->session()->forget(['user', 'token']);
-        $request->session()->flush();
+        // Write logout log
+        LoggerHelper::write('LOGOUT', [
+            'email'   => $user['email'] ?? null,
+            'user_id' => $user['id'] ?? null,
+        ]);
 
-        // Destroy session completely
-        $request->session()->invalidate();
-        $request->session()->regenerate();
-        $request->session()->regenerateToken();
+        session()->forget(['user', 'token']);
+        session()->invalidate();
+        session()->regenerateToken();
 
         return redirect()->route('login');
     }

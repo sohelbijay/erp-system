@@ -27,7 +27,7 @@
     <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" 
            class="fixed z-30 inset-y-0 left-0 w-64 bg-white shadow-lg transform md:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col">
         <div class="p-6 text-center font-bold text-2xl border-b border-gray-200 text-blue-700">
-            ERP System
+            MICRO System
         </div>
 
         <nav class="flex-1 p-4 space-y-2">
@@ -91,7 +91,7 @@
                         </div>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="w-full text-left px-4 py-2 border-b text-gray-700 hover:bg-red-500 hover:text-white transition">
+                            <button type="submit" class="w-full text-left px-4 py-2 border-b text-white-500 bg-red-400 hover:bg-red-500 hover:text-white-700 transition">
                                 Logout
                             </button>
                         </form>

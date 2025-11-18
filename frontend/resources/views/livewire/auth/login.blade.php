@@ -40,6 +40,17 @@
                        placeholder="password" required>
             </div>
 
+            <div wire:loading wire:target="login" class="flex flex-col items-center mt-3">
+                <div class="relative">
+                    <div class="h-10 w-10 rounded-full border-4 border-blue-300 border-t-blue-600 animate-spin"></div>
+                    <div class="absolute inset-0 h-10 w-10 rounded-full animate-ping bg-blue-200 opacity-40"></div>
+                </div>
+
+                <p class="mt-3 text-blue-700 font-semibold animate-pulse">
+                    Logging in, please wait...
+                </p>
+            </div>
+
             <button type="submit"
                     wire:loading.attr="disabled"
                     wire:target="login"
@@ -47,9 +58,8 @@
                 Login
             </button>
 
-            <div wire:loading wire:target="login" class="text-center mt-2 text-gray-600">
-                Logging in, please wait...
-            </div>
+            
+
         </form>
 
         <p class="text-center text-gray-600 mt-6">
