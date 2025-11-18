@@ -1,0 +1,233 @@
+version: '3.9'
+
+services:
+  # ============================
+  # GATEWAY SERVICE
+  # ============================
+  gateway:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    container_name: gateway
+    ports:
+      - "8000:80"
+    env_file:
+      - ./gateway/.env
+    depends_on:
+      - db_gateway
+    networks:
+      - erp-net
+    volumes:
+      - ./gateway:/var/www/html
+
+  # ============================
+  # AUTH SERVICE
+  # ============================
+  auth-service:
+    build:
+      context: ./auth-service
+      dockerfile: Dockerfile
+    container_name: auth-service
+    ports:
+      - "8001:80"
+    env_file:
+      - ./auth-service/.env
+    depends_on:
+      - db_auth
+    networks:
+      - erp-net
+    volumes:
+      - ./auth-service:/var/www/html
+
+  # ============================
+  # HR SERVICE
+  # ============================
+  hr-service:
+    build:
+      context: ./hr-service
+      dockerfile: Dockerfile
+    container_name: hr-service
+    ports:
+      - "8002:80"
+    env_file:
+      - ./hr-service/.env
+    depends_on:
+      - db_hr
+    networks:
+      - erp-net
+    volumes:
+      - ./hr-service:/var/www/html
+
+  # ============================
+  # INVENTORY SERVICE
+  # ============================
+  inventory-service:
+    build:
+      context: ./inventory-service
+      dockerfile: Dockerfile
+    container_name: inventory-service
+    ports:
+      - "8003:80"
+    env_file:
+      - ./inventory-service/.env
+    depends_on:
+      - db_inventory
+    networks:
+      - erp-net
+    volumes:
+      - ./inventory-service:/var/www/html
+
+  # ============================
+  # ACCOUNTS SERVICE
+  # ============================
+  accounts-service:
+    build:
+      context: ./accounts-service
+      dockerfile: Dockerfile
+    container_name: accounts-service
+    ports:
+      - "8004:80"
+    env_file:
+      - ./accounts-service/.env
+    depends_on:
+      - db_accounts
+    networks:
+      - erp-net
+    volumes:
+      - ./accounts-service:/var/www/html
+
+  # ============================
+  # FRONTEND SERVICE
+  # ============================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "8005:80"
+    env_file:
+      - ./frontend/.env
+    depends_on:
+      - gateway
+    networks:
+      - erp-net
+    volumes:
+      - ./frontend:/var/www/html
+
+  # ============================
+  # DATABASES
+  # ============================
+  db_gateway:
+    image: mysql:8.0
+    container_name: db_gateway
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: gateway_db
+      MYSQL_USER: gateway_user
+      MYSQL_PASSWORD: gateway_pass
+    ports:
+      - "33060:3306"
+    volumes:
+      - db_gateway_data:/var/lib/mysql
+    networks:
+      - erp-net
+
+  db_auth:
+    image: mysql:8.0
+    container_name: db_auth
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: auth_db
+      MYSQL_USER: auth_user
+      MYSQL_PASSWORD: auth_pass
+    ports:
+      - "33061:3306"
+    volumes:
+      - db_auth_data:/var/lib/mysql
+    networks:
+      - erp-net
+
+  db_hr:
+    image: mysql:8.0
+    container_name: db_hr
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: hr_db
+      MYSQL_USER: hr_user
+      MYSQL_PASSWORD: hr_pass
+    ports:
+      - "33062:3306"
+    volumes:
+      - db_hr_data:/var/lib/mysql
+    networks:
+      - erp-net
+
+  db_inventory:
+    image: mysql:8.0
+    container_name: db_inventory
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: inventory_db
+      MYSQL_USER: inventory_user
+      MYSQL_PASSWORD: inventory_pass
+    ports:
+      - "33063:3306"
+    volumes:
+      - db_inventory_data:/var/lib/mysql
+    networks:
+      - erp-net
+
+  db_accounts:
+    image: mysql:8.0
+    container_name: db_accounts
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: accounts_db
+      MYSQL_USER: accounts_user
+      MYSQL_PASSWORD: accounts_pass
+    ports:
+      - "33064:3306"
+    volumes:
+      - db_accounts_data:/var/lib/mysql
+    networks:
+      - erp-net
+
+  # ============================
+  # PHPMYADMIN
+  # ============================
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: always
+    environment:
+      PMA_ARBITRARY: 1
+    ports:
+      - "8080:80"
+    depends_on:
+      - db_gateway
+      - db_auth
+      - db_hr
+      - db_inventory
+      - db_accounts
+    networks:
+      - erp-net
+
+# ============================
+# VOLUMES & NETWORKS
+# ============================
+volumes:
+  db_gateway_data:
+  db_auth_data:
+  db_hr_data:
+  db_inventory_data:
+  db_accounts_data:
+
+networks:
+  erp-net:
+    driver: bridge
