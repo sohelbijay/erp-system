@@ -10,6 +10,8 @@ use App\Livewire\About;
 
 use App\Livewire\Dashboard;
 
+
+
 Route::get('/', [HomepageController::class, 'index']);
 
 Route::get('/register', Register::class)->name('register');

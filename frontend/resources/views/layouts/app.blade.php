@@ -20,6 +20,10 @@
 </head>
 <body class="bg-gray-50 text-gray-900 flex flex-col min-h-screen">
 
+@php
+    $user = session('user', ['name' => 'User', 'email' => 'user@example.com']);
+@endphp
+
     <!-- 🌐 Header -->
     <header class="bg-gradient-to-r from-blue-700 to-blue-500 text-white shadow-lg sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center py-4 px-6">
@@ -35,27 +39,33 @@
                     <li><a href="{{ route('about') }}" class="hover:text-yellow-300 transition">About</a></li>
                     <li><a href="{{ route('contact') }}" class="hover:text-yellow-300 transition">Contact</a></li>
 
-                    @guest
-                        <li>
-                            <a href="{{ route('login') }}" class="bg-white text-blue-700 font-semibold px-4 py-2 rounded-lg shadow hover:bg-gray-100 transition">
-                                Login
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('register') }}" class="border border-white px-4 py-2 rounded-lg hover:bg-white hover:text-blue-700 transition">
-                                Register
-                            </a>
-                        </li>
-                    @else
-                        <li><a href="/dashboard" class="hover:text-yellow-300 transition">Dashboard</a></li>
-                        <li><a href="/profile" class="hover:text-yellow-300 transition">Profile</a></li>
-                        <li>
-                            <form method="POST" action="" class="inline">
-                                @csrf
-                                <button type="submit" class="hover:text-red-300 transition">Logout</button>
-                            </form>
-                        </li>
-                    @endguest
+
+                  @if(session()->has('user'))
+                    {{-- Logged In --}}
+                    <li><a href="/dashboard" class="hover:text-yellow-300 transition">Dashboard</a></li>
+                    <li><a href="/profile" class="hover:text-yellow-300 transition">Profile</a></li>
+
+                    <li>
+                        <form method="POST" action="/logout" class="inline">
+                            @csrf
+                            <button type="submit" class="hover:text-red-300 transition">Logout</button>
+                        </form>
+                    </li>
+                @else
+                    {{-- Guest --}}
+                    <li>
+                        <a href="{{ route('login') }}" class="bg-white text-blue-700 font-semibold px-4 py-2 rounded-lg shadow hover:bg-gray-100 transition">
+                            Login
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('register') }}" class="border border-white px-4 py-2 rounded-lg hover:bg-white hover:text-blue-700 transition">
+                            Register
+                        </a>
+                    </li>
+                @endif
+
+
                 </ul>
             </nav>
         </div>
@@ -81,9 +91,9 @@
     </main>
 
     <!-- 🦶 Footer -->
-    <footer class="bg-gray-900 text-gray-300 text-center py-6 mt-auto">
+    <footer class="bg-gradient-to-r from-blue-700 to-blue-500 text-white shadow-lg text-center py-6 mt-auto">
         <p>&copy; {{ date('Y') }} <span class="font-semibold text-white">ERP System</span> — All rights reserved.</p>
-        <p class="text-sm text-gray-400 mt-1">Designed with ❤️ using Laravel & Livewire</p>
+        <p class="text-sm text-white-400 mt-1">Designed with ❤️ using Laravel & Livewire</p>
     </footer>
 
     @livewireScripts

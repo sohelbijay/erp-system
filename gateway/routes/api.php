@@ -27,3 +27,5 @@ Route::get('/test', function () {
 
 Route::post('/register', [ProxyController::class, 'register']);
 Route::post('/login', [ProxyController::class, 'login']);
+
+
