@@ -112,6 +112,10 @@
                 </svg>
                 <span x-show="sidebarOpen">Accounts</span>
             </a>
+
+            
+
+            
         </nav>
     </aside>
 

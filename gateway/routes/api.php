@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProxyController;
 
+use App\Http\Controllers\ModuleProxyController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,8 +26,15 @@ Route::get('/test', function () {
 });
 
 
-
 Route::post('/register', [ProxyController::class, 'register']);
 Route::post('/login', [ProxyController::class, 'login']);
+
+
+Route::prefix('auth-modules')->group(function () {
+    Route::get('/', [ModuleProxyController::class, 'index']);
+    Route::post('/', [ModuleProxyController::class, 'store']);
+    Route::put('/{id}', [ModuleProxyController::class, 'update']);
+    Route::delete('/{id}', [ModuleProxyController::class, 'destroy']);
+});
 
 

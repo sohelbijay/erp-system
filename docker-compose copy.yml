@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   # ============================
   # GATEWAY SERVICE
@@ -21,8 +19,6 @@ services:
           - gateway.local
     volumes:
       - ./gateway:/var/www/html
-      - gateway_storage:/var/www/html/storage
-      - gateway_cache:/var/www/html/bootstrap/cache
 
   # ============================
   # AUTH SERVICE
@@ -44,8 +40,6 @@ services:
           - auth.local
     volumes:
       - ./auth-service:/var/www/html
-      - auth_storage:/var/www/html/storage
-      - auth_cache:/var/www/html/bootstrap/cache
 
   # ============================
   # HR SERVICE
@@ -67,8 +61,6 @@ services:
           - hr.local
     volumes:
       - ./hr-service:/var/www/html
-      - hr_storage:/var/www/html/storage
-      - hr_cache:/var/www/html/bootstrap/cache
 
   # ============================
   # INVENTORY SERVICE
@@ -90,8 +82,6 @@ services:
           - inventory.local
     volumes:
       - ./inventory-service:/var/www/html
-      - inventory_storage:/var/www/html/storage
-      - inventory_cache:/var/www/html/bootstrap/cache
 
   # ============================
   # ACCOUNTS SERVICE
@@ -113,8 +103,6 @@ services:
           - accounts.local
     volumes:
       - ./accounts-service:/var/www/html
-      - accounts_storage:/var/www/html/storage
-      - accounts_cache:/var/www/html/bootstrap/cache
 
   # ============================
   # FRONTEND SERVICE
@@ -136,8 +124,6 @@ services:
           - frontend.local
     volumes:
       - ./frontend:/var/www/html
-      - frontend_storage:/var/www/html/storage
-      - frontend_cache:/var/www/html/bootstrap/cache
 
   # ============================
   # DATABASES
@@ -258,23 +244,13 @@ services:
 # VOLUMES & NETWORKS
 # ============================
 volumes:
-  gateway_storage:
-  gateway_cache:
-  auth_storage:
-  auth_cache:
-  hr_storage:
-  hr_cache:
-  inventory_storage:
-  inventory_cache:
-  accounts_storage:
-  accounts_cache:
-  frontend_storage:
-  frontend_cache:
   db_gateway_data:
   db_auth_data:
   db_hr_data:
   db_inventory_data:
   db_accounts_data:
+  frontend_storage:
+  frontend_cache:
 
 networks:
   erp-net:
